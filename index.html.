@@ -1,0 +1,134 @@
+DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpeakFluent - English Speaking & Grammar Practice</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f4f7fb;
+      color: #1e293b;
+      margin: 0;
+      padding: 24px;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      max-width: 720px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+    }
+    h1 { margin-top: 0; color: #0f172a; }
+    .prompt-box {
+      background: #eef2ff;
+      border-left: 4px solid #4f46e5;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    button {
+      border: none;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    #startBtn { background: #16a34a; color: white; }
+    #stopBtn { background: #dc2626; color: white; }
+    #checkBtn { background: #4f46e5; color: white; }
+    #newPromptBtn { background: #e2e8f0; color: #1e293b; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 120px;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+    .stat-card span {
+      display: block;
+      font-size: 22px;
+      font-weight: 700;
+      color: #4f46e5;
+    }
+    .feedback {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .status { font-size: 14px; color: #64748b; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>English Speaking & Grammar Coach</h1>
+    <p>Click <strong>Start Speaking</strong>, answer the topic out loud, or type below to check fluency and common mistakes.</p>
+
+    <div class="prompt-box">
+      <strong>Today's Speaking Topic:</strong>
+      <p id="promptText" style="margin: 8px 0 12px;">Describe your favorite meal and why you enjoy eating it.</p>
+      <button id="newPromptBtn" type="button">New Topic</button>
+    </div>
+
+    <div class="status" id="status">Microphone ready (works best in Chrome, Edge, or Safari).</div>
+
+    <div class="controls">
+      <button id="startBtn" type="button">Start Speaking</button>
+      <button id="stopBtn" type="button" disabled>Stop</button>
+      <button id="checkBtn" type="button">Check Fluency & Grammar</button>
+    </div>
+
+    <textarea id="transcript" placeholder="Your spoken words will appear here... You can also type or edit text directly."></textarea>
+
+    <div class="stats">
+      <div class="stat-card"><span id="wordCount">0</span>Words</div>
+      <div class="stat-card"><span id="wpmCount">0</span>Words / Min</div>
+      <div class="stat-card"><span id="fillerCount">0</span>Filler Words</div>
+    </div>
+
+    <div class="feedback" id="feedbackBox">
+      <strong>Feedback:</strong> Click <em>Check Fluency & Grammar</em> after speaking to see tips.
+    </div>
+  </div>
+
+  <script>
+    const prompts = [
+      "Describe your favorite meal and why you enjoy eating it.",
+      "Talk about a place you would love to visit and what you would do there.",
+      "Explain a skill you recently learned or want to learn this year.",
+      "Describe a typical morning routine in your life.",
+      "Talk about a movie or book that inspired you."
+    ];
+
+    const grammarRules = [
+      { regex: /\b(he|she|it)\s+don't\b/gi, tip: "Use 'doesn't' instead of 'don't' with he/she/it." },
+      { regex: /\b(i|you|we|they)\s+doesn't\b/gi, tip: "Use 'don't' instead of 'doesn't' with I/you/we/they." },
+      { regex: /\bmore\s+better\b/gi, tip: "Say 'much better' or simply 'better' instead of 'more better'." },
